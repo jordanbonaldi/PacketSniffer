@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+}
+
+group 'NET.NEFERETT'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+task buildSniffer(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Sniffer Software',
+                'Implementation-Version': version,
+                'Main-Class': 'net.neferett.packetsniffer.Main'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    compile 'org.slf4j:slf4j-nop:1.7.25'
+    compile 'org.pcap4j:pcap4j-core:1.+'
+    compile 'org.pcap4j:pcap4j-packetfactory-static:1.+'
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+}
